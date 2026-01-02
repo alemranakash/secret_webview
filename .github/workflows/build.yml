@@ -1,0 +1,40 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      # Since we didn't generate the android folder locally, we need to create it in the CI
+      # This trick ensures the android scaffolding exists before building
+      - name: Create Android Scaffolding
+        run: flutter create . --platforms android
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
