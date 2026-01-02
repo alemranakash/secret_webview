@@ -32,9 +32,10 @@ jobs:
 
       - name: Fix minSdkVersion
         run: |
-          sed -i 's/minSdkVersion.*/minSdkVersion 21/g' android/app/build.gradle
-          echo "Content of build.gradle:"
-          cat android/app/build.gradle
+          echo "flutter.minSdkVersion=21" > android/local.properties
+          echo "flutter.targetSdkVersion=33" >> android/local.properties
+          echo "flutter.compileSdkVersion=33" >> android/local.properties
+          cat android/local.properties
 
       - name: Build APK
         run: flutter build apk --release
