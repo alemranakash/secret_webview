@@ -30,6 +30,10 @@ jobs:
       - name: Create Android Scaffolding
         run: flutter create . --platforms android
 
+      - name: Fix minSdkVersion
+        run: |
+          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
+
       - name: Build APK
         run: flutter build apk --release
 
