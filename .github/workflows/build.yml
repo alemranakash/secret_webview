@@ -32,7 +32,9 @@ jobs:
 
       - name: Fix minSdkVersion
         run: |
-          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
+          sed -i 's/minSdkVersion.*/minSdkVersion 21/g' android/app/build.gradle
+          echo "Content of build.gradle:"
+          cat android/app/build.gradle
 
       - name: Build APK
         run: flutter build apk --release
